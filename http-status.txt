@@ -1,0 +1,8 @@
+
+HTTP codes
+
+1XX = Hold on - Server is busy its processing
+2XX = Here you go - Success
+3XX - Go away - Re-direction 
+4XX - you screwed up - page not found
+5XX - I screwed up - Server is busy
