@@ -1,5 +1,7 @@
 import express from "express";
 import {genPassword, createUser, getUserByName} from "../helper.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
   
@@ -9,23 +11,28 @@ const router = express.Router();
     const {username, password} = request.body;
     console.log(username, password);
     // db.movies.insertMany(movies);
-   const isUserExist = await getUserByName(username)
-   console.log(isUserExist)
+   const userFromDB = await getUserByName(username)
+   console.log(userFromDB)
   //  is username exist
-  if(isUserExist){
-    response.status(400).send({message : "Username Already Exist"})
+  if(!userFromDB){
+    response.status(400).send({message : "Invalid Credentials"})
     return;
   }
-     const hashedPassword= await genPassword(password);
-     const result = await createUser(username, hashedPassword)
-     response.send(result);
+  const storedPassword = userFromDB.password
+
+  const isPasswordMatch = await bcrypt.compare(password, storedPassword)
+  if(!isPasswordMatch){
+    response.status(400).send({message : "Invalid Credentials"})
+    return;
+  }
+
+  // Issue Token
+
+  const token = jwt.sign({id: userFromDB._id}, process.env.SECRET_KEY)
+  response.send({message:"Successful login", token:token});
+ 
   });
 
   export const userRouter = router;
 
-  //  step
- //Validate username is already present 
- //Validate if password matches (and check criteria like does it match the pattern )
-
-
- //store the user details - users collection - username & password 
+  
