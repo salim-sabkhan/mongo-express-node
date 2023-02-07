@@ -1,10 +1,10 @@
 import express from "express";
-import { getAllMovies, getMovieById, deleteMovieById, addMovies } from "../helper.js";
+import { getAllMovies, getMovieById, deleteMovieById, addMovies, updateMovie } from "../helper.js";
 
 const router = express.Router();
 
 // Task - get movies
-router.get("/movies", async(request, response) =>  {
+router.get("/", async(request, response) =>  {
     if(request.query.rating){
       request.query.rating = +request.query.rating;
     }
@@ -14,7 +14,7 @@ router.get("/movies", async(request, response) =>  {
      response.send(movie);
  });
 
-router.get("/movies/:id", async(request,response) => {
+router.get("/:id", async(request,response) => {
     const {id} = request.params
     console.log(id);
     const movie = await getMovieById(id)
@@ -27,7 +27,7 @@ router.get("/movies/:id", async(request,response) => {
   
   // Delete One
   
-  router.delete("/movies/:id", async(request,response) => {
+  router.delete("/:id", async(request,response) => {
     const {id} = request.params
     console.log(id);
     const movie = await deleteMovieById(id)
@@ -36,7 +36,7 @@ router.get("/movies/:id", async(request,response) => {
   
   //  POST Method - to insert all data
   
-  router.post("/movies", async(request, response) =>  {
+  router.post("/", async(request, response) =>  {
     const newMovies = request.body;
     console.log(newMovies);
     // db.movies.insertMany(movies);
@@ -45,4 +45,14 @@ router.get("/movies/:id", async(request,response) => {
      response.send(result);
   });
 
-   export const movieRouter = router;
+    // Update One
+  
+    router.put("/:id", async(request,response) => {
+        const {id} = request.params
+        const updateMovie = request.body;
+        const result = await updateMovie(updateMovie, id)
+        response.send(result)
+      });
+      
+
+   export const moviesRouter = router;

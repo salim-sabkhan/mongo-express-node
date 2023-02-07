@@ -2,7 +2,7 @@
  import { MongoClient } from "mongodb";
  import  dotenv from 'dotenv';
 import { getAllMovies, getMovieById, deleteMovieById, addMovies } from "./helper.js";
-import { movieRouter } from "./Routes/movies.js";
+import { moviesRouter } from "./Routes/movies.js";
 
 
 dotenv.config()
@@ -32,7 +32,7 @@ app.get("/",(request,response) => {
 
 // Specify movie Router
 
-app.use("/movies", movieRouter)
+app.use("/movies", moviesRouter)
 
 // Create a server
 
