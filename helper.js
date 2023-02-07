@@ -12,6 +12,6 @@ export async function deleteMovieById(id) {
 export async function addMovies(newMovies) {
   return await client.db("test").collection("movies").insertMany(newMovies);
 }
-export async function updateMovie(id, updateMovie) {
-  return await client.db("test").collection("movies").updateOne({id:id}), {$set : updateOne}
+export async function updateMovieById(id, updateMovie) {
+  return await client.db("test").collection("movies").updateOne({id:id}, {$set : updateMovie})
 }

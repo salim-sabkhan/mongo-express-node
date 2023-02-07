@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllMovies, getMovieById, deleteMovieById, addMovies, updateMovie } from "../helper.js";
+import { getAllMovies, getMovieById, deleteMovieById, addMovies, updateMovieById } from "../helper.js";
 
 const router = express.Router();
 
@@ -50,7 +50,7 @@ router.get("/:id", async(request,response) => {
     router.put("/:id", async(request,response) => {
         const {id} = request.params
         const updateMovie = request.body;
-        const result = await updateMovie(updateMovie, id)
+        const result = await updateMovieById(id, updateMovie)
         response.send(result)
       });
       
