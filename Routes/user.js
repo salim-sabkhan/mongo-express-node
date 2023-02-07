@@ -1,17 +1,31 @@
 import express from "express";
-import {addMovies} from "../helper.js";
+import {genPassword, createUser, getUserByName} from "../helper.js";
 
 const router = express.Router();
   
   //   Method - to insert all data
   
   router.post("/signup", async(request, response) =>  {
-    const newMovies = request.body;
-    console.log(newMovies);
+    const {username, password} = request.body;
+    console.log(username, password);
     // db.movies.insertMany(movies);
-    // console.log(request.query);
-    const result = await addMovies(newMovies);
+   const isUserExist = await getUserByName(username)
+   console.log(isUserExist)
+  //  is username exist
+  if(isUserExist){
+    response.status(400).send({message : "Username Already Exist"})
+    return;
+  }
+     const hashedPassword= await genPassword(password);
+     const result = await createUser(username, hashedPassword)
      response.send(result);
   });
 
   export const userRouter = router;
+
+  //  step
+ //Validate username is already present 
+ //Validate if password matches (and check criteria like does it match the pattern )
+
+
+ //store the user details - users collection - username & password 
